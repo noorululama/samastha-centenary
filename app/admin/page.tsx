@@ -1,7 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, RefreshCw, Calendar, Phone, Droplet } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { 
+  Users, 
+  RefreshCw, 
+  Calendar, 
+  Phone, 
+  Droplet, 
+  Download, 
+  LogOut, 
+  Search,
+  Filter,
+  Trash2,
+  Eye,
+  FileText,
+  BarChart3
+} from 'lucide-react';
 
 interface Volunteer {
   _id: string;
@@ -17,9 +32,15 @@ interface Volunteer {
 }
 
 export default function AdminPage() {
+  const router = useRouter();
   const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [filteredVolunteers, setFilteredVolunteers] = useState<Volunteer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [bloodGroupFilter, setBloodGroupFilter] = useState('');
+  const [isExporting, setIsExporting] = useState(false);
+  const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null);
 
   const fetchVolunteers = async () => {
     setLoading(true);
