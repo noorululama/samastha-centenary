@@ -14,24 +14,24 @@ export default function Home() {
       {/* Header */}
       <header className="relative bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 text-white shadow-2xl">
         <div className="absolute inset-0 bg-black opacity-5"></div>
-        <div className="container mx-auto px-4 py-8 md:py-12 relative">
-          <div className="flex items-center justify-center mb-3">
-            <Sparkles className="w-8 h-8 text-yellow-300 mr-3 animate-pulse" />
-            <Award className="w-10 h-10 text-yellow-300" />
-            <Sparkles className="w-8 h-8 text-yellow-300 ml-3 animate-pulse" />
+        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 relative">
+          <div className="flex items-center justify-center mb-2 sm:mb-3">
+            <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-300 mr-2 sm:mr-3 animate-pulse" />
+            <Award className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-300" />
+            <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-300 ml-2 sm:ml-3 animate-pulse" />
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-2 sm:mb-3 tracking-tight leading-tight">
             സമസ്ത നൂറാം വാർഷികം
           </h1>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="h-1 w-16 bg-yellow-300 rounded-full"></div>
-            <div className="h-1 w-8 bg-yellow-400 rounded-full"></div>
+          <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
+            <div className="h-0.5 sm:h-1 w-12 sm:w-16 bg-yellow-300 rounded-full"></div>
+            <div className="h-0.5 sm:h-1 w-6 sm:w-8 bg-yellow-400 rounded-full"></div>
           </div>
-          <p className="text-center text-emerald-50 text-xl md:text-2xl font-medium tracking-wide">
+          <p className="text-center text-emerald-50 text-base sm:text-lg md:text-xl lg:text-2xl font-medium tracking-wide px-2">
             വളണ്ടിയർ സേവന രജിസ്ട്രേഷൻ
           </p>
-          <div className="mt-6 flex items-center justify-center gap-2">
-            <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-semibold border border-white/20">
+          <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2">
+            <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm font-semibold border border-white/20">
               നൂറുൽ ഉലമ ആഭിമുഖ്യത്തിൽ
             </div>
           </div>
@@ -39,19 +39,19 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12 relative">
+      <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12 relative">
         <div className="max-w-4xl mx-auto">
           {/* Welcome Banner */}
-          <div className="mb-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl shadow-2xl p-8 text-white transform hover:scale-[1.02] transition-transform duration-300">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
-                <Users className="w-8 h-8" />
+          <div className="mb-6 sm:mb-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-4 sm:p-6 md:p-8 text-white transform hover:scale-[1.01] sm:hover:scale-[1.02] transition-transform duration-300">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl flex-shrink-0">
+                <Users className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
               </div>
-              <div className="flex-1">
-                <h2 className="text-2xl md:text-3xl font-bold mb-3">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 leading-tight">
                   വളണ്ടിയർ സേവനത്തിന് അപേക്ഷ ക്ഷണിക്കുന്നു
                 </h2>
-                <p className="text-emerald-50 text-lg leading-relaxed">
+                <p className="text-emerald-50 text-sm sm:text-base md:text-lg leading-relaxed">
                   നൂറുൽ ഉലമയുടെ ആഭിമുഖ്യത്തിൽ സമസ്ത നൂറാം വാർഷികത്തിന് വളണ്ടിയർ സേവനം നൽകാൻ താൽപര്യമുള്ളവർ സെലക്ഷനു അപേക്ഷിക്കുക.
                 </p>
               </div>
@@ -59,54 +59,54 @@ export default function Home() {
           </div>
 
           {/* Important Information Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Deadline Card */}
-            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-100">
-              <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-4">
-                <div className="flex items-center gap-3 text-white">
-                  <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <Calendar className="w-6 h-6" />
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-100">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-3 sm:p-4">
+                <div className="flex items-center gap-2 sm:gap-3 text-white">
+                  <div className="p-1.5 sm:p-2 bg-white/20 backdrop-blur-sm rounded-lg flex-shrink-0">
+                    <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <h3 className="text-xl font-bold">അവസാന തീയതി</h3>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold">അവസാന തീയതി</h3>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-3xl font-bold text-amber-900 mb-2">
+              <div className="p-4 sm:p-5 md:p-6">
+                <p className="text-2xl sm:text-3xl font-bold text-amber-900 mb-1 sm:mb-2">
                   20-10-25
                 </p>
-                <p className="text-amber-700 text-lg font-semibold">
+                <p className="text-amber-700 text-base sm:text-lg font-semibold">
                   തിങ്കൾ മഗ്രിബിന് മുമ്പായി
                 </p>
-                <div className="mt-4 flex items-center gap-2 text-amber-600">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">സമയത്തിന് അപേക്ഷിക്കുക</span>
+                <div className="mt-3 sm:mt-4 flex items-center gap-2 text-amber-600">
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm font-medium">സമയത്തിന് അപേക്ഷിക്കുക</span>
                 </div>
               </div>
             </div>
 
             {/* Important Notes Card */}
-            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-blue-100">
-              <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4">
-                <div className="flex items-center gap-3 text-white">
-                  <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <AlertCircle className="w-6 h-6" />
+            <div className="group bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-blue-100">
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-3 sm:p-4">
+                <div className="flex items-center gap-2 sm:gap-3 text-white">
+                  <div className="p-1.5 sm:p-2 bg-white/20 backdrop-blur-sm rounded-lg flex-shrink-0">
+                    <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <h3 className="text-xl font-bold">ശ്രദ്ധിക്കേണ്ടത്</h3>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold">ശ്രദ്ധിക്കേണ്ടത്</h3>
                 </div>
               </div>
-              <div className="p-6">
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">സമ്മേളന നഗരിയിൽ നിർദേശിക്കുന്ന മുഴുവൻ ചുമതലകൾ ഉൾക്കൊള്ളാൻ കഴിയുന്നവർ</span>
+              <div className="p-4 sm:p-5 md:p-6">
+                <ul className="space-y-2 sm:space-y-3">
+                  <li className="flex items-start gap-2 sm:gap-3">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-snug">സമ്മേളന നഗരിയിൽ നിർദേശിക്കുന്ന മുഴുവൻ ചുമതലകൾ ഉൾക്കൊള്ളാൻ കഴിയുന്നവർ</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">നഗരിയിൽ മുഴുവൻ ദിവസം സജ്ജമാകാൻ കഴിയുന്നവർ മാത്രം</span>
+                  <li className="flex items-start gap-2 sm:gap-3">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-snug">നഗരിയിൽ മുഴുവൻ ദിവസം സജ്ജമാകാൻ കഴിയുന്നവർ മാത്രം</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">മുകളിൽ പറഞ്ഞ വ്യവസ്ഥകൾ അംഗീകരിക്കുന്നവർ മാത്രം സബ്മിറ്റ് ചെയ്യുക</span>
+                  <li className="flex items-start gap-2 sm:gap-3">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-snug">മുകളിൽ പറഞ്ഞ വ്യവസ്ഥകൾ അംഗീകരിക്കുന്നവർ മാത്രം സബ്മിറ്റ് ചെയ്യുക</span>
                   </li>
                 </ul>
               </div>

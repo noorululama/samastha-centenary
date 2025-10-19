@@ -13,6 +13,39 @@ export async function POST(request: NextRequest) {
     // Connect to the database
     await dbConnect();
     
+    // Check for existing records with the same phone, WhatsApp, or membership number
+    const existingVolunteer = await Volunteer.findOne({
+      $or: [
+        { phoneNumber: validatedData.phoneNumber },
+        { whatsappNumber: validatedData.whatsappNumber },
+        { skssfMembershipNumber: validatedData.skssfMembershipNumber },
+      ],
+    });
+
+    if (existingVolunteer) {
+      // Determine which field is duplicate
+      const duplicateFields = [];
+      if (existingVolunteer.phoneNumber === validatedData.phoneNumber) {
+        duplicateFields.push('ഫോൺ നമ്പർ');
+      }
+      if (existingVolunteer.whatsappNumber === validatedData.whatsappNumber) {
+        duplicateFields.push('WhatsApp നമ്പർ');
+      }
+      if (existingVolunteer.skssfMembershipNumber === validatedData.skssfMembershipNumber) {
+        duplicateFields.push('SKSSF മെമ്പർഷിപ്പ് നമ്പർ');
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: `ഈ ${duplicateFields.join(', ')} ഇതിനകം രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്`,
+          duplicateFields: duplicateFields,
+          existingName: existingVolunteer.name,
+        },
+        { status: 409 }
+      );
+    }
+    
     // Create a new volunteer record
     const volunteer = await Volunteer.create(validatedData);
     
@@ -39,12 +72,20 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Handle duplicate key errors (MongoDB)
+    // Handle duplicate key errors (MongoDB unique constraint)
     if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern || {})[0];
+      let fieldName = 'വിവരങ്ങൾ';
+      
+      if (field === 'phoneNumber') fieldName = 'ഫോൺ നമ്പർ';
+      else if (field === 'whatsappNumber') fieldName = 'WhatsApp നമ്പർ';
+      else if (field === 'skssfMembershipNumber') fieldName = 'SKSSF മെമ്പർഷിപ്പ് നമ്പർ';
+      
       return NextResponse.json(
         {
           success: false,
-          message: 'ഈ വിവരങ്ങൾ ഇതിനകം രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്',
+          message: `ഈ ${fieldName} ഇതിനകം രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്`,
+          duplicateField: fieldName,
         },
         { status: 409 }
       );

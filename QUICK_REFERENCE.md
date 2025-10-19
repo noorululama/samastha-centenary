@@ -80,7 +80,21 @@ Password: samastha@2025
 3. Click again to confirm delete
 4. Click X to cancel
 
+### Task 8: Handle Duplicate Registrations
+1. System auto-detects duplicates (Phone, WhatsApp, SKSSF Number)
+2. User sees warning with duplicate fields
+3. Shows existing volunteer's name
+4. Provides helpful suggestions
+5. No duplicate data saved
+
 ## 🔐 Security Notes
+
+### Duplicate Prevention
+- Phone numbers must be unique
+- WhatsApp numbers must be unique
+- SKSSF membership numbers must be unique
+- System checks before saving
+- User-friendly error messages in Malayalam
 
 ### Credentials Storage
 - Stored in `.env.local` file
@@ -139,6 +153,8 @@ Dashboard works on:
 | Dashboard blank | Check MongoDB is running |
 | Export fails | Ensure you're logged in |
 | No data showing | Click refresh or check MongoDB connection |
+| Duplicate error | User already registered - check phone/WhatsApp/SKSSF numbers |
+| Can't register | Verify all required fields and check for duplicates |
 
 ## 📞 Quick Support
 

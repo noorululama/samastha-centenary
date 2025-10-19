@@ -61,8 +61,12 @@ const VolunteerSchema = new Schema<IVolunteer>(
   }
 );
 
+// Create unique indexes to prevent duplicates
+VolunteerSchema.index({ phoneNumber: 1 }, { unique: true, sparse: true });
+VolunteerSchema.index({ whatsappNumber: 1 }, { unique: true, sparse: true });
+VolunteerSchema.index({ skssfMembershipNumber: 1 }, { unique: true, sparse: true });
+
 // Create index for faster queries
 VolunteerSchema.index({ createdAt: -1 });
-VolunteerSchema.index({ phoneNumber: 1 });
 
 export default models.Volunteer || model<IVolunteer>('Volunteer', VolunteerSchema);
