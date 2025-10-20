@@ -20,7 +20,11 @@ import {
   Edit,
   Trash2,
   Save,
-  XCircle
+  XCircle,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
 } from 'lucide-react';
 
 interface Volunteer {
@@ -34,6 +38,14 @@ interface Volunteer {
   skssfMembershipNumber: string;
   previousExperience: string;
   createdAt: string;
+}
+
+interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
 }
 
 interface Stats {
@@ -57,6 +69,15 @@ export default function DashboardPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<Volunteer>>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [pagination, setPagination] = useState<Pagination>({
+    total: 0,
+    page: 1,
+    limit: 20,
+    totalPages: 0,
+    hasMore: false,
+  });
   const [stats, setStats] = useState<Stats>({
     total: 0,
     today: 0,
@@ -64,17 +85,24 @@ export default function DashboardPage() {
     bloodGroups: {}
   });
 
-  const fetchVolunteers = async () => {
+  const fetchVolunteers = async (page: number = currentPage, limit: number = itemsPerPage) => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/volunteers');
+      const response = await fetch(`/api/volunteers?page=${page}&limit=${limit}`);
       const data = await response.json();
       
       if (data.success) {
         setVolunteers(data.data);
         setFilteredVolunteers(data.data);
-        calculateStats(data.data);
+        setPagination(data.pagination);
+        
+        // Fetch all volunteers for stats (you may want to add a separate stats endpoint)
+        const allResponse = await fetch('/api/volunteers?page=1&limit=10000');
+        const allData = await allResponse.json();
+        if (allData.success) {
+          calculateStats(allData.data);
+        }
       } else {
         setError('Failed to load volunteers');
       }
@@ -107,8 +135,8 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetchVolunteers();
-  }, []);
+    fetchVolunteers(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     let filtered = volunteers;
@@ -226,6 +254,18 @@ export default function DashboardPage() {
     setFormData({});
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setCurrentPage(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleItemsPerPageChange = (newLimit: number) => {
+    setItemsPerPage(newLimit);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('en-IN', {
       day: '2-digit',
@@ -250,7 +290,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-4">
               <button
-                onClick={fetchVolunteers}
+                onClick={() => fetchVolunteers(currentPage, itemsPerPage)}
                 disabled={loading}
                 className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
@@ -271,46 +311,87 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-emerald-500">
+        {/* Stats Cards - Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Registrations</p>
-                <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
+                <p className="text-emerald-100 text-sm mb-1">Total Registrations</p>
+                <p className="text-4xl font-bold">{stats.total}</p>
+                <p className="text-emerald-100 text-xs mt-1">All time</p>
               </div>
-              <Users className="w-12 h-12 text-emerald-500 opacity-20" />
+              <Users className="w-16 h-16 text-white opacity-30" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Today</p>
-                <p className="text-3xl font-bold text-gray-800">{stats.today}</p>
+                <p className="text-blue-100 text-sm mb-1">Today's Registrations</p>
+                <p className="text-4xl font-bold">{stats.today}</p>
+                <p className="text-blue-100 text-xs mt-1">{new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</p>
               </div>
-              <TrendingUp className="w-12 h-12 text-blue-500 opacity-20" />
+              <TrendingUp className="w-16 h-16 text-white opacity-30" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">This Week</p>
-                <p className="text-3xl font-bold text-gray-800">{stats.thisWeek}</p>
+                <p className="text-purple-100 text-sm mb-1">This Week</p>
+                <p className="text-4xl font-bold">{stats.thisWeek}</p>
+                <p className="text-purple-100 text-xs mt-1">Last 7 days</p>
               </div>
-              <Calendar className="w-12 h-12 text-purple-500 opacity-20" />
+              <Calendar className="w-16 h-16 text-white opacity-30" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Blood Groups</p>
-                <p className="text-3xl font-bold text-gray-800">{Object.keys(stats.bloodGroups).length}</p>
+                <p className="text-orange-100 text-sm mb-1">Active Blood Groups</p>
+                <p className="text-4xl font-bold">{Object.keys(stats.bloodGroups).length}</p>
+                <p className="text-orange-100 text-xs mt-1">out of 8 types</p>
               </div>
-              <BarChart3 className="w-12 h-12 text-orange-500 opacity-20" />
+              <BarChart3 className="w-16 h-16 text-white opacity-30" />
             </div>
+          </div>
+        </div>
+
+        {/* Blood Group Distribution Cards */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+            <Droplet className="w-5 h-5 text-red-500" />
+            Blood Group Distribution
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            {bloodGroups.map((bg) => {
+              const count = stats.bloodGroups[bg] || 0;
+              const percentage = stats.total > 0 ? ((count / stats.total) * 100).toFixed(1) : '0';
+              return (
+                <div
+                  key={bg}
+                  className="bg-white rounded-lg shadow-md p-4 border-t-4 border-red-500 hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setBloodGroupFilter(bloodGroupFilter === bg ? '' : bg)}
+                >
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <Droplet className="w-5 h-5 text-red-500 mr-1" />
+                      <span className="text-xl font-bold text-gray-800">{bg}</span>
+                    </div>
+                    <p className="text-2xl font-bold text-red-600">{count}</p>
+                    <p className="text-xs text-gray-500 mt-1">{percentage}%</p>
+                  </div>
+                  {bloodGroupFilter === bg && (
+                    <div className="mt-2 text-center">
+                      <span className="inline-block px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
+                        Filtered
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -408,7 +489,7 @@ export default function DashboardPage() {
                 Registered Volunteers
               </h2>
               <span className="text-sm text-gray-600">
-                Showing {filteredVolunteers.length} of {volunteers.length}
+                Showing {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, pagination.total)} of {pagination.total}
               </span>
             </div>
           </div>
@@ -450,7 +531,7 @@ export default function DashboardPage() {
                   {filteredVolunteers.map((volunteer, index) => (
                     <tr key={volunteer._id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {index + 1}
+                        {((currentPage - 1) * itemsPerPage) + index + 1}
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm font-medium text-gray-900">{volunteer.name}</div>
@@ -524,6 +605,108 @@ export default function DashboardPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+          
+          {/* Pagination Controls */}
+          {!loading && filteredVolunteers.length > 0 && (
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                {/* Items per page selector */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600">Show:</span>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+                    className="text-black px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none bg-white text-sm"
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                  <span className="text-sm text-gray-600">per page</span>
+                </div>
+
+                {/* Page info and navigation */}
+                <div className="flex items-center gap-2">
+                  {/* Page info */}
+                  <span className="text-sm text-gray-600 mr-2">
+                    Page {pagination.page} of {pagination.totalPages}
+                  </span>
+
+                  {/* First page button */}
+                  <button
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1}
+                    className="text-black p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="First page"
+                  >
+                    <ChevronsLeft className="text-black w-4 h-4" />
+                  </button>
+
+                  {/* Previous page button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="text-black p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Previous page"
+                  >
+                    <ChevronLeft className="text-black w-4 h-4" />
+                  </button>
+
+                  {/* Page numbers */}
+                  <div className="text-black hidden sm:flex items-center gap-1">
+                    {(() => {
+                      const pages = [];
+                      const maxVisiblePages = 5;
+                      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                      let endPage = Math.min(pagination.totalPages, startPage + maxVisiblePages - 1);
+                      
+                      if (endPage - startPage < maxVisiblePages - 1) {
+                        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                      }
+
+                      for (let i = startPage; i <= endPage; i++) {
+                        pages.push(
+                          <button
+                            key={i}
+                            onClick={() => handlePageChange(i)}
+                            className={`px-3 py-1.5 rounded-lg border transition-colors ${
+                              i === currentPage
+                                ? 'bg-emerald-600 text-white border-emerald-600'
+                                : 'border-gray-300 hover:bg-gray-100'
+                            }`}
+                          >
+                            {i}
+                          </button>
+                        );
+                      }
+                      return pages;
+                    })()}
+                  </div>
+
+                  {/* Next page button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === pagination.totalPages}
+                    className="text-black p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Next page"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+
+                  {/* Last page button */}
+                  <button
+                    onClick={() => handlePageChange(pagination.totalPages)}
+                    disabled={currentPage === pagination.totalPages}
+                    className="text-black p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Last page"
+                  >
+                    <ChevronsRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

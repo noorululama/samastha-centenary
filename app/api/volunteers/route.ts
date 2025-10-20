@@ -103,19 +103,36 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     
+    // Get pagination parameters from query string
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const skip = (page - 1) * limit;
+    
+    // Get total count for pagination
+    const total = await Volunteer.countDocuments();
+    
+    // Fetch paginated volunteers
     const volunteers = await Volunteer.find()
       .sort({ createdAt: -1 })
-      .limit(100)
+      .skip(skip)
+      .limit(limit)
       .select('-__v');
     
     return NextResponse.json({
       success: true,
-      count: volunteers.length,
       data: volunteers,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hasMore: skip + volunteers.length < total,
+      },
     });
   } catch (error: any) {
     return NextResponse.json(
