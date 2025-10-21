@@ -41,18 +41,18 @@ export default function Home() {
       {/* Main Content */}
       <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12 relative">
         <div className="max-w-4xl mx-auto">
-          {/* Welcome Banner */}
-          <div className="mb-6 sm:mb-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-4 sm:p-6 md:p-8 text-white transform hover:scale-[1.01] sm:hover:scale-[1.02] transition-transform duration-300">
+          {/* Registration Closed Banner */}
+          <div className="mb-6 sm:mb-8 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-4 sm:p-6 md:p-8 text-white transform transition-transform duration-300">
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="p-2 sm:p-3 bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl flex-shrink-0">
-                <Users className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
+                <AlertCircle className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
               </div>
               <div className="flex-1 min-w-0">
                 <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 leading-tight">
-                  വളണ്ടിയർ സേവനത്തിന് അപേക്ഷ ക്ഷണിക്കുന്നു
+                  രജിസ്ട്രേഷൻ സമയം അവസാനിച്ചു
                 </h2>
-                <p className="text-emerald-50 text-sm sm:text-base md:text-lg leading-relaxed">
-                  നൂറുൽ ഉലമയുടെ ആഭിമുഖ്യത്തിൽ സമസ്ത നൂറാം വാർഷികത്തിന് വളണ്ടിയർ സേവനം നൽകാൻ താൽപര്യമുള്ളവർ സെലക്ഷനു അപേക്ഷിക്കുക.
+                <p className="text-red-50 text-sm sm:text-base md:text-lg leading-relaxed">
+                  വളണ്ടിയർ സേവന രജിസ്ട്രേഷൻ സമയം 20-10-25 തിങ്കൾ മഗ്രിബിന് മുമ്പായി അവസാനിച്ചു. ഇനി പുതിയ രജിസ്ട്രേഷനുകൾ സ്വീകരിക്കുന്നതല്ല.
                 </p>
               </div>
             </div>
@@ -113,19 +113,30 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Registration Form Card */}
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
-            <div className="bg-gradient-to-r from-teal-500 to-emerald-600 p-6">
+          {/* Registration Form Card - Disabled */}
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-300 opacity-60">
+            <div className="bg-gradient-to-r from-gray-400 to-gray-500 p-6">
               <h3 className="text-3xl font-bold text-white flex items-center gap-3">
                 <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                  <Users className="w-7 h-7" />
+                  <AlertCircle className="w-7 h-7" />
                 </div>
                 രജിസ്ട്രേഷൻ ഫോം
               </h3>
-              <p className="text-teal-50 mt-2">എല്ലാ വിവരങ്ങളും ശ്രദ്ധാപൂർവ്വം പൂരിപ്പിക്കുക</p>
+              <p className="text-gray-100 mt-2">രജിസ്ട്രേഷൻ സമയം അവസാനിച്ചു</p>
             </div>
             <div className="p-6 md:p-8 bg-gradient-to-b from-gray-50 to-white">
-              <RegistrationForm />
+              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 md:p-8 text-center">
+                <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+                <h4 className="text-2xl font-bold text-red-700 mb-3">
+                  രജിസ്ട്രേഷൻ അവസാനിച്ചു
+                </h4>
+                <p className="text-red-600 text-lg leading-relaxed">
+                  അവസാന തീയതി കഴിഞ്ഞതിനാൽ ഇനി പുതിയ രജിസ്ട്രേഷനുകൾ സ്വീകരിക്കുന്നതല്ല.
+                </p>
+                <p className="text-red-600 text-base mt-4">
+                  കൂടുതൽ വിവരങ്ങൾക്ക് നൂറുൽ ഉലമയെ ബന്ധപ്പെടുക.
+                </p>
+              </div>
             </div>
           </div>
 
